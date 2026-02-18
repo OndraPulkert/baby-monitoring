@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import usePeer from '../hooks/usePeer';
+import useTurnCredentials from '../hooks/useTurnCredentials';
 import useParentConnection from '../hooks/useParentConnection';
 import useWakeLock from '../hooks/useWakeLock';
 import useAudioLevel from '../hooks/useAudioLevel';
@@ -16,8 +17,9 @@ interface ParentModeProps {
 
 export default function ParentMode({ pin, onStop }: ParentModeProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const iceServers = useTurnCredentials();
   const peerId = getParentPeerId(pin);
-  const { status: peerStatus, getPeer } = usePeer(peerId);
+  const { status: peerStatus, getPeer } = usePeer(peerId, iceServers);
   const { remoteStream, connectionStatus } = useParentConnection(getPeer, peerStatus, pin);
   const level = useAudioLevel(remoteStream);
   const { alarming, dismiss } = useCryAlarm(level, connectionStatus === 'connected');

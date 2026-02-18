@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import Peer from 'peerjs';
-import { PEER_CONFIG } from '../utils/peer-config';
 
 type PeerStatus = 'connecting' | 'open' | 'error' | 'closed';
 
-export default function usePeer(peerId: string) {
+export default function usePeer(peerId: string, iceServers: RTCIceServer[] | null) {
   const [status, setStatus] = useState<PeerStatus>('connecting');
   const peerRef = useRef<Peer | null>(null);
   const destroyedRef = useRef(false);
 
   useEffect(() => {
-    if (!peerId) return;
+    if (!peerId || !iceServers) return;
     destroyedRef.current = false;
 
-    const peer = new Peer(peerId, PEER_CONFIG);
+    const peer = new Peer(peerId, {
+      debug: 1,
+      config: { iceServers },
+    });
     peerRef.current = peer;
 
     peer.on('open', () => {
@@ -50,7 +52,7 @@ export default function usePeer(peerId: string) {
       peer.destroy();
       peerRef.current = null;
     };
-  }, [peerId]);
+  }, [peerId, iceServers]);
 
   const getPeer = useCallback(() => peerRef.current, []);
 

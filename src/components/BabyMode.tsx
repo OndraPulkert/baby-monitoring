@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import useMediaStream from '../hooks/useMediaStream';
 import usePeer from '../hooks/usePeer';
+import useTurnCredentials from '../hooks/useTurnCredentials';
 import useBabyConnection from '../hooks/useBabyConnection';
 import useWakeLock from '../hooks/useWakeLock';
 import useAudioLevel from '../hooks/useAudioLevel';
@@ -18,8 +19,9 @@ export default function BabyMode({ pin, onStop }: BabyModeProps) {
   const [nightMode, setNightMode] = useState(false);
   const facingMode = nightMode ? 'user' : 'environment';
   const { stream, error } = useMediaStream(true, facingMode);
+  const iceServers = useTurnCredentials();
   const peerId = getBabyPeerId(pin);
-  const { status: peerStatus, getPeer } = usePeer(peerId);
+  const { status: peerStatus, getPeer } = usePeer(peerId, iceServers);
   const connectionStatus = useBabyConnection(getPeer, peerStatus, stream);
   const level = useAudioLevel(stream);
   useWakeLock(true);
