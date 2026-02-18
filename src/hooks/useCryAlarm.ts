@@ -62,16 +62,23 @@ export default function useCryAlarm(level: number, enabled: boolean) {
         // Vibrate
         navigator.vibrate?.([300, 200, 300, 200, 300]);
 
-        // Show notification via Service Worker (visible on lock screen)
+        // Show notification — prefer Service Worker (visible on lock screen), fallback to page Notification
         if ('Notification' in window && Notification.permission === 'granted') {
-          navigator.serviceWorker?.ready.then(reg =>
-            reg.showNotification('Baby Monitor', {
-              body: 'Baby is crying!',
-              tag: 'baby-cry',
-              requireInteraction: true,
-              vibrate: [300, 200, 300, 200, 300],
-            } as NotificationOptions)
-          ).catch(() => {});
+          const swReady = navigator.serviceWorker?.ready;
+          if (swReady) {
+            swReady.then(reg =>
+              reg.showNotification('Baby Monitor', {
+                body: 'Baby is crying!',
+                tag: 'baby-cry',
+                requireInteraction: true,
+                vibrate: [300, 200, 300, 200, 300],
+              } as NotificationOptions)
+            ).catch(() => {
+              try { new Notification('Baby Monitor', { body: 'Baby is crying!', tag: 'baby-cry' }); } catch {}
+            });
+          } else {
+            try { new Notification('Baby Monitor', { body: 'Baby is crying!', tag: 'baby-cry' }); } catch {}
+          }
         }
       }
     } else {

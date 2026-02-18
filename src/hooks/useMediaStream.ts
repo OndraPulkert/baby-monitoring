@@ -13,7 +13,7 @@ export default function useMediaStream(enabled: boolean, facingMode: string = 'e
     async function start() {
       try {
         const s = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { exact: facingMode }, width: { ideal: 640 }, height: { ideal: 480 } },
+          video: { facingMode: { ideal: facingMode }, width: { ideal: 640 }, height: { ideal: 480 } },
           audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
         });
         if (cancelled) {
