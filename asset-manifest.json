@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/baby-monitoring/static/css/main.6da0f8de.css",
-    "main.js": "/baby-monitoring/static/js/main.316e8e1d.js",
+    "main.js": "/baby-monitoring/static/js/main.dc38c7ff.js",
     "service-worker.js": "/baby-monitoring/service-worker.js",
     "index.html": "/baby-monitoring/index.html",
     "main.6da0f8de.css.map": "/baby-monitoring/static/css/main.6da0f8de.css.map",
-    "main.316e8e1d.js.map": "/baby-monitoring/static/js/main.316e8e1d.js.map"
+    "main.dc38c7ff.js.map": "/baby-monitoring/static/js/main.dc38c7ff.js.map"
   },
   "entrypoints": [
     "static/css/main.6da0f8de.css",
-    "static/js/main.316e8e1d.js"
+    "static/js/main.dc38c7ff.js"
   ]
 }
